@@ -1,7 +1,11 @@
-#!/bin/bash
+#!/bin/bash -ex
+set -e -o pipefail
 
-curl http://wiki.qemu-project.org/download/qemu-2.4.1.tar.bz2 | tar xvj
-cd qemu-2.4.1
-./configure --prefix=$(dirname $PWD)
+VERSION=2.9.0
+curl "http://download.qemu.org/qemu-$VERSION.tar.bz2" | tar xvj
+cd "qemu-$VERSION"
+
+source ctf-tools-venv-activate
+./configure "--prefix=$(dirname $PWD)" "--python=$(which python)"
 make -j $(nproc)
 make install
